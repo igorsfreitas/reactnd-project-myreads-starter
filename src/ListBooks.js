@@ -17,10 +17,17 @@ class ListBooks extends React.Component {
         })
     }
 
-    renderBookShelf(shelf){
-        return (<BookShelf 
-            bookShelfTitle={shelf} 
-            books={this.state.books.filter(book=>book.shelf === shelf)} />)
+    renderBookShelf(){
+        let shelfs = this.state.books.map(book=>book.shelf)
+        shelfs = shelfs.filter((current, index)=>shelfs.indexOf(current)===index)
+
+        return (
+            shelfs.map(shelf=>(
+                <BookShelf 
+                    bookShelfTitle={shelf} 
+                    books={this.state.books.filter(book=>book.shelf === shelf)} />  
+            ))
+        )
     }
 
     render(){
@@ -30,7 +37,7 @@ class ListBooks extends React.Component {
                     <h1>MyReads</h1>
                 </div>
                 <div className="list-books-content">
-                    {this.state.books.length>0 ? this.renderBookShelf("currentlyReading") : null}
+                    {this.state.books.length>0 ? this.renderBookShelf() : null}
                 </div>
             </div>
         )
