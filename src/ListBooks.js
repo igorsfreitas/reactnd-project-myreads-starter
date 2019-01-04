@@ -1,10 +1,12 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
+import Loading from './components/Loading'
 
 class ListBooks extends React.Component {
 
     state = {
+        loading: true,
         books: []
     }
 
@@ -12,7 +14,7 @@ class ListBooks extends React.Component {
         // this.setState({books = BooksAPI.getAll()})
         BooksAPI.getAll().then(books=>{
           this.setState(()=>{
-            return {books: books}
+            return {books: books, loading: false}
           })
         })
     }
@@ -37,7 +39,7 @@ class ListBooks extends React.Component {
                     <h1>MyReads</h1>
                 </div>
                 <div className="list-books-content">
-                    {this.state.books.length>0 ? this.renderBookShelf() : null}
+                    {this.state.loading ? <Loading /> : this.state.books.length > 0 ? this.renderBookShelf() : "Não existem livros na estante"}
                 </div>
             </div>
         )
