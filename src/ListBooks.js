@@ -10,13 +10,30 @@ class ListBooks extends React.Component {
         books: []
     }
 
-    componentDidMount(){
-        // this.setState({books = BooksAPI.getAll()})
+    getAllBooks(){
         BooksAPI.getAll().then(books=>{
-          this.setState(()=>{
-            return {books: books, loading: false}
-          })
+            this.setState(()=>{
+              return {books: books, loading: false}
+            })
         })
+    }
+
+    componentDidMount(){
+        this.getAllBooks()
+    }
+
+    handleSelect(shelf, book) {
+        this.setState(()=>{
+            return {loading: true}
+        })
+        BooksAPI.update(book, shelf).then(books=>{
+            console.log(`Livro ${book.title} movido com sucesso para a estante ${shelf}`)
+            this.getAllBooks()
+        },err=>{
+            this.setState(()=>{
+                return {loading: false}
+            })
+        }) 
     }
 
     renderBookShelf(){
@@ -26,8 +43,11 @@ class ListBooks extends React.Component {
         return (
             shelfs.map(shelf=>(
                 <BookShelf 
+                    key={shelf}
                     bookShelfTitle={shelf} 
-                    books={this.state.books.filter(book=>book.shelf === shelf)} />  
+                    bookShelfList={shelfs}
+                    books={this.state.books.filter(book=>book.shelf === shelf)}
+                    handleSelect={this.handleSelect.bind(this)} />  
             ))
         )
     }

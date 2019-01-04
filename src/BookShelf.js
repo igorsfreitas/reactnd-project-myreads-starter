@@ -1,5 +1,5 @@
 import React from 'react'
-import fromCamelCaseToRegularForm from './utils/fromCamelCaseToRegularForm';
+import fromCamelCaseToRegularForm from './utils/fromCamelCaseToRegularForm'
 
 class BookShelf extends React.Component {
 
@@ -11,13 +11,15 @@ class BookShelf extends React.Component {
                         <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer">
-                            <select>
+                            {<select onChange={(e)=>this.props.handleSelect(e.target.value, book)}>
                                 <option value="move" disabled>Move to...</option>
-                                <option value="currentlyReading">Currently Reading</option>
-                                <option value="wantToRead">Want to Read</option>
-                                <option value="read">Read</option>
+                                {this.props.bookShelfList.map(shelfOption=>{
+                                    return (
+                                        <option key={shelfOption} value={shelfOption} selected={shelfOption===book.shelf}>{fromCamelCaseToRegularForm(shelfOption)}</option>
+                                    )
+                                })}
                                 <option value="none">None</option>
-                            </select>
+                            </select> }
                             </div>
                         </div>
                         <div className="book-title">{book.title}</div>
