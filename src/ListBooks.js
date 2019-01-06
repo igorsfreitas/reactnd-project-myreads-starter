@@ -2,6 +2,7 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
 import Loading from './components/Loading'
+import { Link } from "react-router-dom";
 
 class ListBooks extends React.Component {
 
@@ -15,6 +16,7 @@ class ListBooks extends React.Component {
             this.setState(()=>{
               return {books: books, loading: false}
             })
+            this.props.populateBooksList(books)
         })
     }
 
@@ -54,12 +56,19 @@ class ListBooks extends React.Component {
 
     render(){
         return(
-            <div className="list-books">
-                <div className="list-books-title">
-                    <h1>MyReads</h1>
+            <div>
+                <div className="list-books">
+                    <div className="list-books-title">
+                        <h1>MyReads</h1>
+                    </div>
+                    <div className="list-books-content">
+                        {this.state.loading ? <Loading /> : this.state.books.length > 0 ? this.renderBookShelf() : "Não existem livros na estante"}
+                    </div>
                 </div>
-                <div className="list-books-content">
-                    {this.state.loading ? <Loading /> : this.state.books.length > 0 ? this.renderBookShelf() : "Não existem livros na estante"}
+                <div className="open-search">
+                    <Link to="/search">
+                    <button >Add a book</button>
+                    </Link>
                 </div>
             </div>
         )
